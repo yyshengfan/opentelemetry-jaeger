@@ -33,7 +33,7 @@ const {
   AwsInstrumentation,
 } = require("@opentelemetry/instrumentation-aws-sdk");
 
-exports.default = {
+module.exports = {
   getTraceId: function() {
     const currentSpan = api.trace.getSpan(api.context.active());
     const { traceId } = currentSpan?.spanContext() || {};
