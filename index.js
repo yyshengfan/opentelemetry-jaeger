@@ -36,7 +36,7 @@ const {
 module.exports = {
   getTraceId: function() {
     const currentSpan = api.trace.getSpan(api.context.active());
-    const { traceId } = currentSpan?.spanContext() || {};
+    const { traceId } = currentSpan.spanContext() || {};
     return traceId;
   },
   initTrace: function(params, instrumentationArr) {
