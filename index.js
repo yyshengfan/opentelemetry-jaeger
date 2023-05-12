@@ -13,7 +13,7 @@ const {
 } = require("@opentelemetry/instrumentation-ioredis");
 const {
   MySQL2Instrumentation,
-} = require("@opentelemetry/instrumentation-mysql2");
+} = require("./instrumentation-mysql2/build/src/instrumentation");
 const {
   SemanticResourceAttributes,
 } = require("@opentelemetry/semantic-conventions");
@@ -32,12 +32,20 @@ const {
 const {
   AwsInstrumentation,
 } = require("@opentelemetry/instrumentation-aws-sdk");
+const { getNodeAutoInstrumentations } = require("@opentelemetry/auto-instrumentations-node");
 
 module.exports = {
   getTraceId: function() {
     const currentSpan = api.trace.getSpan(api.context.active());
+    if(!currentSpan) return '';
     const { traceId } = currentSpan.spanContext() || {};
     return traceId;
+  },
+  getTrace: function() {
+    const currentSpan = api.trace.getSpan(api.context.active());
+    if(!currentSpan) return {};
+    const { traceId, spanId } = currentSpan.spanContext() || {};
+    return { trace: traceId, span: spanId };
   },
   initTrace: function(params, instrumentationArr) {
     const {
@@ -84,6 +92,10 @@ module.exports = {
   
     //["dns", "express", "koa", "fastify", "winston", "http", "mysql2", "ioredis", "mongodb", "grpc", "awssdk"]
     const instrumentations = [];
+    // node自动埋点
+    instrumentationArr.push(getNodeAutoInstrumentations);
+
+    // 可选择的组件
     instrumentationArr.forEach((item) => {
       switch (item) {
         case "dns": {

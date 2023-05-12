@@ -64,7 +64,7 @@ class MySQL2Instrumentation extends instrumentation_1.InstrumentationBase {
                 const span = thisPlugin.tracer.startSpan(utils_1.getSpanName(query), {
                     kind: api.SpanKind.CLIENT,
                     // attributes: Object.assign(Object.assign(Object.assign({}, MySQL2Instrumentation.COMMON_ATTRIBUTES), utils_1.getConnectionAttributes(this.config)), { [semantic_conventions_1.SemanticAttributes.DB_STATEMENT]: utils_1.getDbStatement(query, format, values) }),
-                    attributes: Object.assign(Object.assign(Object.assign({}, MySQL2Instrumentation.COMMON_ATTRIBUTES), utils_1.getConnectionAttributes(this.config)), { [semantic_conventions_1.SemanticAttributes.DB_STATEMENT]: 'hui_ceshi_mysql2_trace' }),
+                    attributes: Object.assign(Object.assign(Object.assign({}, MySQL2Instrumentation.COMMON_ATTRIBUTES), utils_1.getConnectionAttributes(this.config)), { [semantic_conventions_1.SemanticAttributes.DB_STATEMENT]: 'mysql2_trace' }),
                 });
                 const endSpan = utils_1.once((err, results) => {
                     if (err) {
